@@ -1,4 +1,4 @@
-# AFTERIMAGE - Game Design Document
+# [GAME NAME] - Game Design Document
 
 **Student Name:** Mohsin
 **Student ID:** _(fill in)_
@@ -10,7 +10,7 @@
 
 **Description:**
 
-AFTERIMAGE is a single-player 2D puzzle-platformer about being the only worker in a facility
+This is a single-player 2D puzzle-platformer about being the only worker in a facility
 that was built for a crew. Every room needs more hands than one person has: a door that only
 stays open while something heavy rests on a plate, a ledge with no way up, a gap that has to be
 crossed while a gate is held.

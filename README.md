@@ -1,4 +1,4 @@
-# AFTERIMAGE
+# Game Name TBD
 
 CSCI 4160U Game Development — semester game project.
 

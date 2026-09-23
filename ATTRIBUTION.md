@@ -13,11 +13,6 @@ rather than reconstructed at the end.
   eight-direction movement loop used to confirm raylib works end to end. Not final game code.
 - Creating this repository's structure and its initial documentation files (`README.md`,
   this file, the `docs/` stubs).
-- Discussing candidate game concepts and their scope, and drafting `docs/gdd.md` for the
-  chosen concept (AFTERIMAGE) from my direction: I chose the genre, rejected concepts that
-  were too close to the lab activity, and selected the recording/afterimage twist from a
-  shortlist; the assistant wrote the document's prose and proposed the inspirations,
-  progression structure and the determinism constraints.
 
 Written unaided: the choice of genre and twist, and the decision to reject a
 lab-activity-derived design.

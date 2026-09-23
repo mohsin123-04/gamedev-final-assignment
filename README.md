@@ -1,6 +1,14 @@
-# GameDev Final Assignment
+# AFTERIMAGE
 
 CSCI 4160U Game Development — semester game project.
+
+A 2D puzzle-platformer about being the only worker in a facility built for a crew. Every run you
+perform is recorded; reset the room and it replays as a translucent *afterimage* that repeats
+your inputs exactly — standing on pressure plates, blocking hazards, and acting as a platform
+you can stand on. Solve each room by layering takes until enough of you exist at once for one of
+you to reach the exit.
+
+See [`docs/gdd.md`](docs/gdd.md) for the full design.
 
 Built with **Python** and **raylib** (via the [`raylib` Python bindings](https://pypi.org/project/raylib/),
 imported as `pyray`). raylib is a course requirement.

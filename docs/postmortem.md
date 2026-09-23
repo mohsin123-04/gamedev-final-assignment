@@ -20,6 +20,13 @@ _(to be filled in)_
 
 ## Running log
 
+**2026-09-23** — Concept locked: AFTERIMAGE, a recording/afterimage puzzle-platformer. Rejected
+a straight platformer as too close to the Chapter 4 lab activity, and rejected several simpler
+concepts (grid puzzle, dodge) for having too little to put in `data/` and no room to grow to
+December. The determinism requirement — fixed timestep, no unseeded RNG, input as a value — is
+a design constraint from day one rather than something to retrofit; if that turns out to be
+wrong, this is the entry to revisit.
+
 **2026-09-23** — Repository set up to the required shape. Python + raylib (`pyray`) chosen over
 the course's default Odin + raylib: the framework requirement is satisfied either way, and I am
 faster in Python. Toolchain verified by running a movement spike. Game concept not yet locked.

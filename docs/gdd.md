@@ -1,7 +1,7 @@
 # [GAME NAME] - Game Design Document
 
 **Student Name:** Mohsin
-**Student ID:** _(fill in)_
+**Student ID:** 100875639
 **Date:** 2026-09-23
 **Class:** CSCI 4160U Game Development
 **Repository Link:** https://github.com/mohsin123-04/gamedev-final-assignment

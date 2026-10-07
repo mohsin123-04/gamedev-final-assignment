@@ -5,20 +5,19 @@ rather than reconstructed at the end.
 
 ## AI use
 
-**Claude Code (Anthropic)** — used so far for:
+**Claude Code (Anthropic)** wrote or edited these files:
 
-- Setting up the development environment on Windows: installing the raylib Python bindings,
-  verifying the toolchain by compiling and running a test program.
-- Writing `src/main.py`, the movement spike — a frame-rate-independent, normalised
-  eight-direction movement loop used to confirm raylib works end to end. Not final game code.
-- Creating this repository's structure and its initial documentation files (`README.md`,
-  this file, the `docs/` stubs).
+- `src/config.py` — tuning constants (window size, timestep, player speed).
+- `src/input.py` — `ActionSet` plus the keyboard and tape input sources.
+- `src/entities.py` — the `Entity` data type and the shared `step()` simulation.
+- `src/state.py` — the `Mode` state machine and `GameState` (entity collection, tapes, transitions).
+- `src/main.py` — the fixed-timestep loop and the update/render split.
+- `docs/architecture.md` — the Checkpoint 2 architecture write-up.
+- `docs/gdd.md` — drafted from my design notes.
+- `README.md`, `docs/postmortem.md`, this file — repository structure and documentation.
 
 Written unaided: the choice of genre and twist, and the decision to reject a
 lab-activity-derived design.
-
-_This section is updated as work continues. Each entry says what the assistant was used for,
-not merely that it was used._
 
 ## Third-party assets
 

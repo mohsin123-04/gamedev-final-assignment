@@ -1,10 +1,10 @@
-# Game Name TBD
+# Afterimage
 
-CSCI 4160U Game Development — semester game project.
+CSCI 4160U Game Development, semester game project.
 
 A 2D puzzle-platformer about being the only worker in a facility built for a crew. Every run you
 perform is recorded; reset the room and it replays as a translucent *afterimage* that repeats
-your inputs exactly — standing on pressure plates, blocking hazards, and acting as a platform
+your inputs exactly: standing on pressure plates, blocking hazards, and acting as a platform
 you can stand on. Solve each room by layering takes until enough of you exist at once for one of
 you to reach the exit.
 
@@ -16,8 +16,8 @@ imported as `pyray`). raylib is a course requirement.
 ## Requirements
 
 - Python 3.11 or newer
-- The dependencies in `requirements.txt` (just `raylib`, which bundles the raylib library itself —
-  there is nothing to compile and no system package to install)
+- The dependencies in `requirements.txt` (just `raylib`, which bundles the raylib library itself,
+  so there is nothing to compile and no system package to install)
 
 ## Build and run
 
@@ -36,8 +36,14 @@ If the window opens and you can move with the arrow keys, the setup is correct.
 
 | Key | Action |
 |---|---|
-| Arrow keys | Move |
+| Arrow keys / WASD | Move the live player |
+| `R` | Reset: bank this take as an afterimage, start a new one |
+| `P` | Pause / resume |
+| `Enter` | On ROOM SOLVED, run the room again |
 | `Esc` | Quit |
+
+Cross the green exit on the right to solve the room. Each reset layers another afterimage that
+replays your inputs exactly; after four takes the room restarts.
 
 ## Repository layout
 
@@ -52,5 +58,8 @@ ATTRIBUTION.md      AI use and third-party assets
 
 ## Status
 
-Checkpoint 1. The game design is being finalised; `src/main.py` is currently a movement
-spike used to verify the raylib toolchain end to end.
+Checkpoint 2 (Architecture). `src/` holds the architecture skeleton: entities as data in one
+collection, an explicit state machine (`PLAYING` / `PAUSED` / `ROOM_SOLVED`), and a fixed-timestep
+loop with a clean update/render split. The reset-and-record afterimage loop is in and playable.
+Collision, level data, and the enemy AI arrive in later checkpoints. See
+[`docs/architecture.md`](docs/architecture.md).

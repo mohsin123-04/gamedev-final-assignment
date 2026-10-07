@@ -1,4 +1,4 @@
-# [GAME NAME] - Game Design Document
+# Afterimage - Game Design Document
 
 **Student Name:** Mohsin
 **Student ID:** 100875639

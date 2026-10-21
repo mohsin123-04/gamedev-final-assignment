@@ -1,0 +1,11 @@
+{
+  "name": "Room 01 — Antechamber",
+
+  "player_speed": 400.0,
+  "take_limit": 4,
+  "exit_x": 1140,
+
+  "player_size": 48,
+  "spawn_x": 80.0,
+  "spawn_y": 336.0
+}

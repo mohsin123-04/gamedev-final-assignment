@@ -5,7 +5,6 @@ import math
 from dataclasses import dataclass
 from enum import Enum, auto
 
-from config import PLAYER_SIZE, PLAYER_SPEED
 from input import ActionSet, InputSource
 
 
@@ -20,8 +19,8 @@ class Entity:
     y: float
     source: InputSource      # KeyboardSource for the live player, TapeSource for a ghost
     kind: EntityKind
-    w: int = PLAYER_SIZE
-    h: int = PLAYER_SIZE
+    w: int                   # size comes from room data (data/room01.json), not a constant
+    h: int
     age: int = 0             # ticks alive; drives the fade on older afterimages
 
 
@@ -33,11 +32,15 @@ def _normalize(x: float, y: float) -> tuple[float, float]:
     return x / length, y / length
 
 
-def step(e: Entity, a: ActionSet, dt: float) -> None:
-    """Advance one entity one fixed tick; pure in (e, a, dt) so a tape always replays identically."""
+def step(e: Entity, a: ActionSet, dt: float, speed: float) -> None:
+    """Advance one entity one fixed tick; pure in (e, a, dt, speed) so a tape replays identically.
+
+    `speed` is the room's data-driven player_speed (pixels/second), passed in by the caller
+    rather than read from a constant, so editing data/room01.json changes how fast every body moves.
+    """
     ix = (1.0 if a.right else 0.0) - (1.0 if a.left else 0.0)
     iy = (1.0 if a.down else 0.0) - (1.0 if a.up else 0.0)
     dx, dy = _normalize(ix, iy)
-    e.x += dx * PLAYER_SPEED * dt
-    e.y += dy * PLAYER_SPEED * dt
+    e.x += dx * speed * dt
+    e.y += dy * speed * dt
     e.age += 1

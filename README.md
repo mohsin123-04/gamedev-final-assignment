@@ -58,8 +58,17 @@ ATTRIBUTION.md      AI use and third-party assets
 
 ## Status
 
-Checkpoint 2 (Architecture). `src/` holds the architecture skeleton: entities as data in one
-collection, an explicit state machine (`PLAYING` / `PAUSED` / `ROOM_SOLVED`), and a fixed-timestep
-loop with a clean update/render split. The reset-and-record afterimage loop is in and playable.
-Collision, level data, and the enemy AI arrive in later checkpoints. See
+Checkpoint 3 (Data & Assets). Building on the CP2 architecture skeleton (entities as data in one
+collection, an explicit `PLAYING` / `PAUSED` / `ROOM_SOLVED` state machine, a fixed-timestep loop
+with a clean update/render split):
+
+- **Data-driven behaviour.** Room tuning lives in [`data/room01.json`](data/room01.json), loaded at
+  boot by [`src/room.py`](src/room.py). Editing `player_speed`, `take_limit` or `exit_x` visibly
+  changes the game with no code change — see [`data/README.md`](data/README.md).
+- **Assets preloaded at boot.** The player texture and two sound effects are loaded once in
+  [`src/assets.py`](src/assets.py) before the loop, not when first used — see
+  [`assets/README.md`](assets/README.md). All three are self-made by
+  [`tools/make_assets.py`](tools/make_assets.py).
+
+Collision and the enemy AI arrive in later checkpoints. See
 [`docs/architecture.md`](docs/architecture.md).

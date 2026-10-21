@@ -4,14 +4,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum, auto
 
-from config import PLAYER_SIZE, WINDOW_H, WINDOW_W
 from entities import Entity, EntityKind
 from input import ActionSet, KeyboardSource, TapeSource
-
-SPAWN_X = 80.0
-SPAWN_Y = WINDOW_H / 2 - PLAYER_SIZE / 2
-EXIT_X = WINDOW_W - 140          # crossing this x solves the room
-TAKE_LIMIT = 4                   # afterimages allowed before the room resets itself
+from room import Room
 
 
 class Mode(Enum):
@@ -23,13 +18,14 @@ class Mode(Enum):
 @dataclass
 class GameState:
     mode: Mode
+    room: Room                          # loaded from data/; supplies spawn, size, speed, limits
     entities: list[Entity]              # THE collection: every player and afterimage
     tapes: list[list[ActionSet]]        # banked takes, each replayed as one afterimage
     current_tape: list[ActionSet]       # the take being recorded by the live player right now
 
     @classmethod
-    def new(cls) -> "GameState":
-        gs = cls(mode=Mode.PLAYING, entities=[], tapes=[], current_tape=[])
+    def new(cls, room: Room) -> "GameState":
+        gs = cls(mode=Mode.PLAYING, room=room, entities=[], tapes=[], current_tape=[])
         gs._rebuild_entities()
         return gs
 
@@ -42,23 +38,26 @@ class GameState:
     def takes_used(self) -> int:
         return len(self.tapes)
 
+    def _spawn(self, source) -> Entity:
+        """A body at the room's data-driven spawn, sized from the room data."""
+        return Entity(
+            x=self.room.spawn_x, y=self.room.spawn_y,
+            source=source, kind=EntityKind.PLAYER if isinstance(source, KeyboardSource) else EntityKind.AFTERIMAGE,
+            w=self.room.player_size, h=self.room.player_size,
+        )
+
     # --- transitions: the only code that mutates mode or the collection ---
 
     def _rebuild_entities(self) -> None:
         """Rebuild the collection: one afterimage per banked tape (replaying from frame 0) plus a fresh player."""
-        self.entities = [
-            Entity(SPAWN_X, SPAWN_Y, source=TapeSource(list(tape)), kind=EntityKind.AFTERIMAGE)
-            for tape in self.tapes
-        ]
-        self.entities.append(
-            Entity(SPAWN_X, SPAWN_Y, source=KeyboardSource(), kind=EntityKind.PLAYER)
-        )
+        self.entities = [self._spawn(TapeSource(list(tape))) for tape in self.tapes]
+        self.entities.append(self._spawn(KeyboardSource()))
         self.current_tape = []
 
     def reset_take(self) -> None:
         """The core verb: bank the current take and start a new one alongside its afterimage."""
         self.tapes.append(self.current_tape)
-        if self.takes_used >= TAKE_LIMIT:
+        if self.takes_used >= self.room.take_limit:
             self.restart_room()
         else:
             self._rebuild_entities()

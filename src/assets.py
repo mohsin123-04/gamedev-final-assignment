@@ -1,5 +1,4 @@
-"""Assets, loaded once at boot — not at the moment of first use.
-
+"""
 `Assets.load()` is called a single time in main(), right after the window and audio
 device come up and before the game loop starts. Every texture and sound the game needs
 is pulled off disk and onto the GPU / into the mixer there, so no frame ever pays to

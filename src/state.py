@@ -1,12 +1,15 @@
 """Explicit game states (Mode enum) and GameState, which owns the entity collection and tapes."""
 from __future__ import annotations
 
-from dataclasses import dataclass
-from enum import Enum, auto
+from dataclasses import dataclass, field
 
+from enemy import Enemy
 from entities import Entity, EntityKind
 from input import ActionSet, KeyboardSource, TapeSource
 from room import Room
+
+
+from enum import Enum, auto
 
 
 class Mode(Enum):
@@ -18,10 +21,17 @@ class Mode(Enum):
 @dataclass
 class GameState:
     mode: Mode
-    room: Room                          # loaded from data/; supplies spawn, size, speed, limits
+    room: Room                          # loaded from data/; supplies spawn, size, speed, limits, devices
     entities: list[Entity]              # THE collection: every player and afterimage
     tapes: list[list[ActionSet]]        # banked takes, each replayed as one afterimage
     current_tape: list[ActionSet]       # the take being recorded by the live player right now
+    enemy: Enemy | None = None          # CP4: the room's sentry, rebuilt fresh each take
+    caught: bool = False                # set the tick the current take dies; consumed in main()
+
+    # device state for the current take, reset every rebuild
+    latched_open: set = field(default_factory=set)   # plate ids whose latched doors have been struck
+    pressed: set = field(default_factory=set)         # plate ids held this tick (for rendering)
+    open_cells: set = field(default_factory=set)      # door cells open this tick (for rendering)
 
     @classmethod
     def new(cls, room: Room) -> "GameState":
@@ -49,18 +59,33 @@ class GameState:
     # --- transitions: the only code that mutates mode or the collection ---
 
     def _rebuild_entities(self) -> None:
-        """Rebuild the collection: one afterimage per banked tape (replaying from frame 0) plus a fresh player."""
+        """Rebuild the collection: one afterimage per banked tape (replaying from frame 0) plus a fresh player.
+
+        The sentry and the device state are rebuilt here too, so every take -- and every afterimage
+        replaying from frame 0 -- starts against the same sentry and the same closed doors.
+        """
         self.entities = [self._spawn(TapeSource(list(tape))) for tape in self.tapes]
         self.entities.append(self._spawn(KeyboardSource()))
         self.current_tape = []
+        self.enemy = Enemy.from_spec(self.room.enemy) if self.room.enemy is not None else None
+        self.latched_open = set()
+        self.pressed = set()
+        self.open_cells = set()
 
-    def reset_take(self) -> None:
-        """The core verb: bank the current take and start a new one alongside its afterimage."""
+    def reset_take(self) -> bool:
+        """The core verb: bank the current take and start a new one alongside its afterimage.
+
+        Returns False and does nothing if the take recorded no input — banking an empty
+        take would spawn an afterimage frozen at the spawn point, which is never useful.
+        """
+        if not self.current_tape:
+            return False
         self.tapes.append(self.current_tape)
         if self.takes_used >= self.room.take_limit:
             self.restart_room()
         else:
             self._rebuild_entities()
+        return True
 
     def restart_room(self) -> None:
         """Clear every take and start the room over."""

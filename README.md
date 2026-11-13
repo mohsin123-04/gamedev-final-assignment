@@ -2,22 +2,22 @@
 
 CSCI 4160U Game Development, semester game project.
 
-A 2D puzzle-platformer about being the only worker in a facility built for a crew. Every run you
-perform is recorded; reset the room and it replays as a translucent *afterimage* that repeats
-your inputs exactly: standing on pressure plates, blocking hazards, and acting as a platform
-you can stand on. Solve each room by layering takes until enough of you exist at once for one of
-you to reach the exit.
+A 2D puzzle game where you're the only worker in a facility that was built for a whole crew.
+Every run you do gets recorded, and when you reset the room it plays back as a faint "afterimage"
+that repeats your inputs exactly. Those copies can stand on pressure plates, block hazards, or
+act as a platform. You solve a room by stacking up enough takes that one of you can finally get
+to the exit.
 
-See [`docs/gdd.md`](docs/gdd.md) for the full design.
+Full design is in [`docs/gdd.md`](docs/gdd.md).
 
-Built with **Python** and **raylib** (via the [`raylib` Python bindings](https://pypi.org/project/raylib/),
+Built with Python and raylib (the [`raylib` Python bindings](https://pypi.org/project/raylib/),
 imported as `pyray`). raylib is a course requirement.
 
 ## Requirements
 
 - Python 3.11 or newer
-- The dependencies in `requirements.txt` (just `raylib`, which bundles the raylib library itself,
-  so there is nothing to compile and no system package to install)
+- The packages in `requirements.txt`. That's just `raylib`, which ships the library itself, so
+  there's nothing to compile and no system package to install.
 
 ## Build and run
 
@@ -30,7 +30,7 @@ pip install -r requirements.txt
 python src/main.py
 ```
 
-If the window opens and you can move with the arrow keys, the setup is correct.
+If a window opens and you can move with the arrow keys, it's working.
 
 ## Controls
 
@@ -42,8 +42,10 @@ If the window opens and you can move with the arrow keys, the setup is correct.
 | `Enter` | On ROOM SOLVED, run the room again |
 | `Esc` | Quit |
 
-Cross the green exit on the right to solve the room. Each reset layers another afterimage that
-replays your inputs exactly; after four takes the room restarts.
+Any body reaching a green exit tile solves the room, so the trick is to layer afterimages: one of
+you holds the pressure plate to keep its door open while another slips through. Watch out for the
+hazards and the patrolling sentry. Every reset saves your run as an afterimage that replays your
+inputs, and once you hit the take limit the room starts over.
 
 ## Repository layout
 
@@ -58,17 +60,22 @@ ATTRIBUTION.md      AI use and third-party assets
 
 ## Status
 
-Checkpoint 3 (Data & Assets). Building on the CP2 architecture skeleton (entities as data in one
-collection, an explicit `PLAYING` / `PAUSED` / `ROOM_SOLVED` state machine, a fixed-timestep loop
-with a clean update/render split):
+Checkpoint 4 (Enemy AI). This sits on top of the CP2 skeleton: entities are data in one
+collection, there's a `PLAYING` / `PAUSED` / `ROOM_SOLVED` state machine, and the loop keeps a
+fixed timestep with update and render kept separate. What's in so far:
 
-- **Data-driven behaviour.** Room tuning lives in [`data/room01.json`](data/room01.json), loaded at
-  boot by [`src/room.py`](src/room.py). Editing `player_speed`, `take_limit` or `exit_x` visibly
-  changes the game with no code change — see [`data/README.md`](data/README.md).
-- **Assets preloaded at boot.** The player texture and two sound effects are loaded once in
-  [`src/assets.py`](src/assets.py) before the loop, not when first used — see
-  [`assets/README.md`](assets/README.md). All three are self-made by
+- Data-driven behaviour. The room is a tile grid plus a few tuning numbers in
+  [`data/room01.json`](data/room01.json), read at boot by [`src/room.py`](src/room.py). Change a
+  value like `player_speed`, `take_limit` or `enemy.detect_radius`, or edit the level `grid`, and
+  the game behaves differently without any code change. See [`data/README.md`](data/README.md).
+- Assets loaded at boot. The player texture and the two sound effects load once in
+  [`src/assets.py`](src/assets.py) before the loop starts, not when they're first used. See
+  [`assets/README.md`](assets/README.md). I made all three myself with
   [`tools/make_assets.py`](tools/make_assets.py).
+- Grid world and devices. Tile collision, pressure plates wired to doors, and hazards that end a
+  take, in [`src/devices.py`](src/devices.py).
+- Enemy AI. A sentry that patrols a set of waypoints and switches to chasing when a body gets
+  close, with a bit of hysteresis so it doesn't flicker between the two. Code in
+  [`src/enemy.py`](src/enemy.py), notes in [`docs/cp4-ai.md`](docs/cp4-ai.md).
 
-Collision and the enemy AI arrive in later checkpoints. See
-[`docs/architecture.md`](docs/architecture.md).
+Architecture write-up is in [`docs/architecture.md`](docs/architecture.md).

@@ -74,9 +74,10 @@ def make_reset_wav(path: Path) -> None:
 
 
 def make_exit_wav(path: Path) -> None:
-    """A two-note rising chime for solving the room (C5 -> G5)."""
-    out = _tone(523.25, 0.12, decay=5.0)             # C5
-    out += _tone(783.99, 0.26, decay=4.0)            # G5
+    """A clear rising win jingle for solving the room (C5-E5-G5-C6), loud and sustained."""
+    out = []
+    for freq, dur in [(523.25, 0.11), (659.25, 0.11), (783.99, 0.11), (1046.50, 0.34)]:
+        out += _tone(freq, dur, decay=3.0, amp=0.78)
     _write_wav(path, out)
 
 

@@ -31,8 +31,8 @@ the demo.
         give_up_ticks in a row)
 ```
 
-- **PATROL → CHASE — "spots a body":** the nearest body (the live player *or* any afterimage)
-  comes within `detect_radius`.
+- **PATROL → CHASE — "spots a body":** the live player comes within `detect_radius`. The sentry
+  hunts the live player only — afterimages are faint echoes it can't see (see §3).
 - **CHASE → PATROL — "loses the trail":** nothing is within the larger `lose_radius` for
   `give_up_ticks` consecutive ticks. `lose_radius > detect_radius` is deliberate hysteresis so
   the sentry doesn't flip-flop at the edge of its vision; the tick counter means a target has to
@@ -68,10 +68,12 @@ The sentry is not a moving wall. It plugs into two systems that already existed 
   replays as an afterimage up to the moment of the catch. This is exactly the design the GDD
   already describes ("a take that died still counts and still replays up to the moment it died"),
   reached through code CP2/CP3 already shipped rather than anything new.
-- **The entity/recording system.** The sentry targets the *nearest body*, and afterimages are
-  bodies, so a replaying take can **distract** the sentry — sacrifice one take to pull the guard
-  off the route while another take slips past. The enemy is woven into the recording mechanic,
-  not sitting beside it.
+- **The entity/recording system.** The sentry chases the **live player only**; afterimages are
+  echoes it can't see. An earlier version let it chase the *nearest body* of all of them so a ghost
+  could decoy it — but because a ghost is never "caught," parking one beside the sentry pinned it in
+  CHASE forever and left the live player free, so the adversary cancelled itself out. Hunting the
+  live player keeps the sentry a constant threat; the catch still banks the take as an afterimage,
+  so the enemy stays woven into the recording mechanic rather than sitting beside it.
 
 ## 4. Determinism
 
@@ -90,4 +92,5 @@ the whole game rests on replays being identical, and a nondeterministic chaser w
 4. **Transition → PATROL:** open the gap and wait ~1.5 s; it gives up and returns to the route —
    "loses the trail".
 5. **Interaction:** let it touch you; the take is banked as a dead afterimage (reset sound), and
-   the run continues with that ghost in play. Then bait it with an afterimage to show distraction.
+   the run continues with that ghost in play — and the sentry ignores that ghost, staying locked on
+   the live you, so the pressure never lets up.

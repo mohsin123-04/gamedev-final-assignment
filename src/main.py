@@ -50,8 +50,11 @@ def update(state: GameState, dt: float) -> None:
         return
 
     # CP4: the sentry advances in the same deterministic tick. Catching the player ends the take.
+    # It hunts the live player only -- afterimages are faint echoes it can't see. (If it chased the
+    # nearest of *all* bodies, a ghost could be parked next to it to pin it in CHASE forever, since
+    # a ghost is never caught, and the live player would stroll past unopposed.)
     if state.enemy is not None:
-        update_enemy(state.enemy, state.entities, dt)
+        update_enemy(state.enemy, [state.player], dt)
         if overlaps(state.enemy, state.player) and state.reset_take():
             state.caught = True
 

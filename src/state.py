@@ -75,10 +75,13 @@ class GameState:
     def reset_take(self) -> bool:
         """The core verb: bank the current take and start a new one alongside its afterimage.
 
-        Returns False and does nothing if the take recorded no input — banking an empty
-        take would spawn an afterimage frozen at the spawn point, which is never useful.
+        Returns False and does nothing if the take never actually moved — banking a take with
+        no movement would spawn an afterimage frozen at the spawn point, which is never useful.
+        (The tape records one ActionSet per tick even while idle, so an all-idle tape is still
+        non-empty; checking for real movement, not just a non-empty tape, is what keeps a
+        stand-still reset from leaving a motionless ghost behind.)
         """
-        if not self.current_tape:
+        if not any(a.up or a.down or a.left or a.right for a in self.current_tape):
             return False
         self.tapes.append(self.current_tape)
         if self.takes_used >= self.room.take_limit:

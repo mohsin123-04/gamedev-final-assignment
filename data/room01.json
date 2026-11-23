@@ -2,7 +2,7 @@
   "name": "Room 01 - Antechamber",
   "tile_size": 48,
   "player_speed": 240.0,
-  "take_limit": 4,
+  "take_limit": 3,
   "player_size": 40,
   "latched": [],
   "grid": [
@@ -27,8 +27,8 @@
     "spawn_y": 120.0,
     "size": 44,
     "patrol_speed": 170.0,
-    "chase_speed": 300.0,
-    "detect_radius": 200.0,
+    "chase_speed": 200.0,
+    "detect_radius": 150.0,
     "lose_radius": 300.0,
     "give_up_ticks": 90,
     "waypoints": [

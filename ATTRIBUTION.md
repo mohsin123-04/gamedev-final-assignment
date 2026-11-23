@@ -17,8 +17,10 @@ work rather than writing it all at the end.
 - `src/assets.py` — the boot-time asset loader (texture + sounds loaded once, before the loop).
 - `src/main.py` — the fixed-timestep loop and update/render split, the grid and enemy drawing, texture drawing and sound playback.
 - `tools/make_assets.py` — the generator script that produces the self-made assets below.
+- `tools/balance_check.py` — the CP5 balancing harness that measures the room (escape / sneak / takes) from the shipped data.
 - `docs/architecture.md` — the Checkpoint 2 architecture write-up.
 - `docs/cp4-ai.md` — the Checkpoint 4 write-up explaining the enemy's state machine and movement.
+- `docs/cp5-balance.md` — the Checkpoint 5 balancing write-up (before/after values and the evidence).
 - `docs/gdd.md` — drafted from my design notes.
 - `README.md`, `data/README.md`, `assets/README.md`, `docs/postmortem.md`, this file — documentation.
 

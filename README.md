@@ -60,7 +60,7 @@ ATTRIBUTION.md      AI use and third-party assets
 
 ## Status
 
-Checkpoint 4 (Enemy AI). This sits on top of the CP2 skeleton: entities are data in one
+Checkpoint 5 (Balancing). This sits on top of the CP2 skeleton: entities are data in one
 collection, there's a `PLAYING` / `PAUSED` / `ROOM_SOLVED` state machine, and the loop keeps a
 fixed timestep with update and render kept separate. What's in so far:
 
@@ -77,5 +77,9 @@ fixed timestep with update and render kept separate. What's in so far:
 - Enemy AI. A sentry that patrols a set of waypoints and switches to chasing when a body gets
   close, with a bit of hysteresis so it doesn't flicker between the two. Code in
   [`src/enemy.py`](src/enemy.py), notes in [`docs/cp4-ai.md`](docs/cp4-ai.md).
+- Balancing. The sentry's `chase_speed` and `detect_radius` and the room's `take_limit` were
+  retuned (in data, no recompile) toward a deliberate difficulty shape, backed by measurements
+  from [`tools/balance_check.py`](tools/balance_check.py). Before/after in
+  [`docs/cp5-balance.md`](docs/cp5-balance.md).
 
 Architecture write-up is in [`docs/architecture.md`](docs/architecture.md).

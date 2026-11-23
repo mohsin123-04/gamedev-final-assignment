@@ -46,9 +46,10 @@ A deliberate **hybrid**, one behaviour per state:
   data, looping. A patrol route is *level content* — the designer decides where the guard walks
   — so computing it at runtime would be solving a problem that doesn't exist.
 - **CHASE — seek steering.** A single seek: step straight toward the target at `chase_speed`,
-  clamped so it doesn't overshoot (`_seek` in `src/enemy.py`). `chase_speed` (320) is tuned
-  **below** `player_speed` (400), so the chase is a pressure to be escaped, not a death sentence
-  — which is also what makes "loses the trail" reachable: the player can open the gap.
+  clamped so it doesn't overshoot (`_seek` in `src/enemy.py`). `chase_speed` (200) is tuned
+  **below** `player_speed` (240), so the chase is a pressure to be escaped, not a death sentence
+  — which is also what makes "loses the trail" reachable: the player can open the gap. (Those
+  values were set deliberately in the CP5 balancing pass — see [`cp5-balance.md`](cp5-balance.md).)
 
 ### Why not pathfinding / A\*
 

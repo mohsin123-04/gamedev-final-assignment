@@ -13,7 +13,7 @@ the file, run the game again, and see it change without touching any code.
 | Key | What it does | Try it |
 |---|---|---|
 | `player_speed` | How fast every body moves, in pixels per second (the live player and all the afterimages). At 240 that works out to 4.0 px per tick. | Set it to `480` and everything moves twice as fast; `120` and it's half speed. |
-| `take_limit` | How many afterimages you get before the room resets. The HUD shows it as `TAKES: n / limit`. | Set it to `2` and the room restarts after two resets instead of four. |
+| `take_limit` | How many afterimages you get before the room resets. The HUD shows it as `TAKES: n / limit`. | Set it to `2` and the room restarts after two resets instead of three. |
 | `enemy.detect_radius` | How close a body has to get before the sentry notices it and starts chasing. It's inside the `enemy` block. | Bump it to `400` and the sentry sees you from way across the room; drop it to `80` and you can sneak past. |
 
 The other top-level keys are data too: `tile_size` (pixels per grid cell), `player_size` (the
@@ -45,7 +45,7 @@ in code. There's more on how it works in [`docs/cp4-ai.md`](../docs/cp4-ai.md).
 |---|---|
 | `spawn_x`, `spawn_y`, `size` | Where the sentry starts and how big its hitbox is. |
 | `patrol_speed` | Speed along its waypoint route while patrolling. |
-| `chase_speed` | Speed while chasing a body. If it's below `player_speed` you can outrun it; above it (300 vs 240 as shipped) you can't, which is on purpose here. |
+| `chase_speed` | Speed while chasing a body. It's set below `player_speed` (200 vs 240 as shipped) so the chase is something you can outrun rather than a guaranteed catch — see the balancing notes in [`docs/cp5-balance.md`](../docs/cp5-balance.md). |
 | `detect_radius` | A body this close switches the sentry from patrol to chase. |
 | `lose_radius` | It only gives up and goes back to patrol once everything is past this bigger radius. The gap between the two radii stops it flickering between states. |
 | `give_up_ticks` | How many ticks in a row with nothing inside `lose_radius` before it goes back to patrolling (90 ticks is 1.5 seconds at 60 fps). |
